@@ -11,7 +11,7 @@ services:
   zoneminder:
     build: .
     privileged: true
-    shm_size: 512m
+    shm_size: 1G
     ports:
       - "80:80/tcp"
     volumes:
