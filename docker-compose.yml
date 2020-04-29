@@ -1,11 +1,10 @@
 version: "2.1"
 
 volumes:
-  # zm_events:
-  # zm_images:
+  zm_events:
+  zm_images:
   zm_mysql:
   zm_logs:
-  # mariadb:
 
 services:
   zoneminder:
@@ -15,24 +14,7 @@ services:
     ports:
       - "80:80/tcp"
     volumes:
-      # - "zm_events:/var/cache/zoneminder/events"
-      # - "zm_images:/var/cache/zoneminder/images"
+      - "zm_events:/var/cache/zoneminder/events"
+      - "zm_images:/var/cache/zoneminder/images"
       - "zm_mysql:/var/lib/mysql"
       - "zm_logs:/var/log/zm"
-    # environment:
-    #   ZM_DB_HOST: mariadb
-    #   ZM_DB_NAME: zoneminder
-    #   ZM_DB_USER: zoneminder
-    #   ZM_DB_PASS: zoneminder
-    # links:
-    #   - mariadb
-
-  # mariadb:
-  #   image: mariadb:10-bionic
-  #   volumes:
-  #     - mariadb:/var/lib/mysql
-  #   environment:
-  #     MYSQL_RANDOM_ROOT_PASSWORD: yes
-  #     MYSQL_DATABASE: zoneminder
-  #     MYSQL_USER: zoneminder
-  #     MYSQL_PASSWORD: zoneminder

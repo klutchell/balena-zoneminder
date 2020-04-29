@@ -62,7 +62,11 @@ printf "o\nn\np\n1\n\n\nw\n" | fdisk /dev/sda
 mkfs.ext4 /dev/sda1 -L ZONEMINDER
 ```
 
-Restart the `zoneminder` service and the storage should be mounted at `/var/cache/zoneminder`.
+Restart the `zoneminder` service and any partitions with the label `ZONEMINDER` will be mounted at `/media/{UUID}`.
+
+The system path to the mount location(s) are printed in the logs.
+
+Once logged into the ZoneMinder dashboard, add the storage location under Options -> Storage -> Add New Storage.
 
 ## connect to dashboard
 

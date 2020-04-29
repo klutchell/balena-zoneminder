@@ -2,6 +2,9 @@
 
 set -e
 
-mount -v -L ZONEMINDER /var/cache/zoneminder/events
-
-chown www-data:www-data /var/cache/zoneminder/events
+for uuid in $(blkid -tLABEL=ZONEMINDER -sUUID -ovalue)
+do
+    mkdir -v /media/"${uuid}" 2>/dev/null || true
+    mount -v UUID="${uuid}" /media/"${uuid}"
+    chown www-data:www-data /media/"${uuid}"
+done
