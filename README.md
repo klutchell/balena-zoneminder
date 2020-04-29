@@ -46,6 +46,12 @@ Application envionment variables apply to all services within the application, a
 
 ## Usage
 
+## connect to dashboard
+
+Connect to the dashboard and start adding monitors and storage.
+
+<http://mydevice.local:80/zm>
+
 ### prepare external storage
 
 Connect to the `Host OS` Terminal and run the following:
@@ -66,13 +72,7 @@ Restart the `zoneminder` service and any partitions with the label `ZONEMINDER` 
 
 The system path to the mount location(s) are printed in the logs.
 
-Once logged into the ZoneMinder dashboard, add the storage location under Options -> Storage -> Add New Storage.
-
-## connect to dashboard
-
-Connect to the dashboard and start adding monitors.
-
-<http://mydevice.local:80/zm>
+Add the storage location in the ZoneMinder dashboard under Options -> Storage -> Add New Storage.
 
 ## Development
 
