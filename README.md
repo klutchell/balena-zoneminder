@@ -33,7 +33,7 @@ balena login
 balena push myApp
 
 # OR push to a local device running balenaOS
-balena push mydevice.local --env TZ=America/Toronto
+balena push mydevice.local --env MYSQL_ROOT_PASSWORD=mysecretpw --env TZ=America/Toronto
 ```
 
 ### Application Environment Variables
@@ -43,12 +43,23 @@ Application envionment variables apply to all services within the application, a
 |Name|Example|Purpose|
 |---|---|---|
 |`TZ`|`America/Toronto`|(optional) inform services of the [timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) in your location|
+|`MYSQL_ROOT_PASSWORD`|`mysecretpw`|(required) provide a root password for the mysql database|
 
 ## Usage
 
+## create database credentials
+
+Connect to the `mariadb` Terminal and run the following:
+
+```bash
+mysql -uroot -p${MYSQL_ROOT_PASSWORD} -e "GRANT ALL PRIVILEGES ON *.* TO 'zmuser'@'%' IDENTIFIED BY 'zmpass';"
+```
+
+Make sure `zmuser` and `zmpass` match the values provided for `ZM_DB_USER` and `ZM_DB_PASS` in `docker-compose.yml`.
+
 ## connect to dashboard
 
-Connect to the dashboard and start adding monitors and storage.
+Once the database credentials are created you can restart the `zoneminder` service and connect to the dashboard to start adding monitors and storage.
 
 <http://mydevice.local:80/zm>
 

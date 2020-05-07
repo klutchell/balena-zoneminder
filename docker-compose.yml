@@ -3,18 +3,30 @@ version: "2.1"
 volumes:
   zm_events:
   zm_images:
-  zm_mysql:
   zm_logs:
+  mariadb:
 
 services:
   zoneminder:
     build: .
     privileged: true
-    shm_size: 1G
+    shm_size: 1024M
     ports:
       - "80:80/tcp"
     volumes:
       - "zm_events:/var/cache/zoneminder/events"
       - "zm_images:/var/cache/zoneminder/images"
-      - "zm_mysql:/var/lib/mysql"
       - "zm_logs:/var/log/zm"
+    environment:
+      ZM_DB_HOST: mariadb
+      ZM_DB_NAME: zm
+      ZM_DB_USER: zmuser
+      ZM_DB_PASS: zmpass
+    links:
+      - mariadb
+
+  # https://hub.docker.com/_/mariadb/
+  mariadb:
+    image: mariadb:10
+    volumes:
+      - "mariadb:/var/lib/mysql"
