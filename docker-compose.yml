@@ -13,6 +13,7 @@ services:
     shm_size: 1024M
     ports:
       - "80:80/tcp"
+      - "9000:9000/tcp"
     volumes:
       - "zm_events:/var/cache/zoneminder/events"
       - "zm_images:/var/cache/zoneminder/images"
