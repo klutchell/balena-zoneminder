@@ -1,12 +1,8 @@
 
 FROM balenalib/jetson-nano-ubuntu:bionic
 
-COPY mount.sh entrypoint.sh /
-
 ENV DEBCONF_NONINTERACTIVE_SEEN true
 ENV DEBIAN_FRONTEND noninteractive
-
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
@@ -35,17 +31,27 @@ RUN apt-get update \
         wget \
     && a2enconf zoneminder \
     && a2enmod rewrite cgi \
-    && mkdir /opt/zmeventnotification \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /opt/es
+
+SHELL ["/bin/bash", "-eo", "pipefail", "-c"]
+
+RUN curl -fsSL https://github.com/pliablepixels/zmeventnotification/archive/v5.13.3.tar.gz -o es.tar.gz \
+    && tar xzf es.tar.gz --strip-components=1 \
     && perl -MCPAN -e "install Net::WebSocket::Server" \
 	&& perl -MCPAN -e "install LWP::Protocol::https" \
 	&& perl -MCPAN -e "install Config::IniFiles" \
 	&& perl -MCPAN -e "install Net::MQTT::Simple" \
 	&& perl -MCPAN -e "install Net::MQTT::Simple::Auth" \
-    && curl -fsSL https://github.com/pliablepixels/zmeventnotification/archive/v5.13.3.tar.gz -o - | tar --strip-components=1 -xzf - -C /opt/zmeventnotification \
-    && /opt/zmeventnotification/install.sh --no-interactive --install-es --install-hook --install-config \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
-    && rm -rf /opt/zmeventnotification \
-    && chmod a+x /entrypoint.sh /mount.sh
+    && echo "verbose = off" >> ~/.wgetrc \
+    && ./install.sh --no-interactive --install-es --install-config --no-install-hook | tee install.log \
+    && if grep -q ERROR install.log ; then exit 1; fi \
+    && rm -rf ./*
+
+COPY mount.sh entrypoint.sh /
+
+RUN chmod a+x /entrypoint.sh /mount.sh
 
 ENTRYPOINT [ "/bin/sh", "-c", "/mount.sh && /entrypoint.sh" ]
