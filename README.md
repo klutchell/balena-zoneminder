@@ -4,19 +4,15 @@
 
 ## Requirements
 
-- NVIDIA Jetson Nano development board
+- Raspberry Pi 4 or a similar x64 device supported by BalenaCloud
 - 32GB microSD card & reader
 - External USB drive for video storage
 
 ## Getting Started
 
-To get started can either sign up for a free balenaCloud account and push changes to your device remotely via Git.
+To get started you'll first need to sign up for a free balenaCloud account and flash your device.
 
-<https://www.balena.io/docs/learn/getting-started/jetson-nano/>
-
-Or you can skip the balenaCloud account and push changes to your device locally via the balena CLI.
-
-<https://www.balena.io/os/docs/jetson-nano/getting-started/>
+<https://www.balena.io/docs/learn/getting-started>
 
 ## Deployment
 

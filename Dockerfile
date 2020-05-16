@@ -1,5 +1,5 @@
 
-FROM balenalib/jetson-nano-ubuntu:bionic
+FROM balenalib/raspberrypi4-64-ubuntu:bionic
 
 ENV DEBCONF_NONINTERACTIVE_SEEN true
 ENV DEBIAN_FRONTEND noninteractive
