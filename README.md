@@ -40,6 +40,7 @@ Application envionment variables apply to all services within the application, a
 |---|---|---|
 |`TZ`|`America/Toronto`|(optional) inform services of the [timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) in your location|
 |`MYSQL_ROOT_PASSWORD`|`mysecretpw`|(required) provide a root password for the mysql database|
+|`EXTRA_MOUNT`|`//192.168.8.1/sda1/nextcloud -o vers=1.0,username=guest`|(optional) additional path to mount to `/mnt/storage` on startup|
 
 ## Usage
 
@@ -64,18 +65,18 @@ Once the database credentials are created you can restart the `zoneminder` servi
 Connect to the `Host OS` Terminal and run the following:
 
 ```bash
-# o - clear the in memory partition table
-# n - new partition
+# g - create a new empty GPT partition table
+# n - add a new partition
 # p - primary partition
 # 1 - partition number 1
 # default - start at beginning of disk
 # default - extend partition to end of disk
 # w - write the partition table
-printf "o\nn\np\n1\n\n\nw\n" | fdisk /dev/sda
-mkfs.ext4 /dev/sda1 -L ZONEMINDER
+printf "g\nn\np\n1\n\n\nw\n" | fdisk /dev/sda
+mkfs.ext4 /dev/sda1
 ```
 
-Restart the `zoneminder` service and any partitions with the label `ZONEMINDER` will be mounted at `/media/{UUID}`.
+Restart the `zoneminder` service and any supported partitions will be mounted at `/media/{UUID}`.
 
 The system path to the mount location(s) are printed in the logs.
 
