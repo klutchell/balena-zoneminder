@@ -40,7 +40,8 @@ Application envionment variables apply to all services within the application, a
 |---|---|---|
 |`TZ`|`America/Toronto`|(optional) inform services of the [timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) in your location|
 |`MYSQL_ROOT_PASSWORD`|`mysecretpw`|(required) provide a root password for the mysql database|
-|`EXTRA_MOUNT`|`//192.168.8.1/sda1 -o vers=1.0,username=guest`|(optional) additional path to mount to `/mnt/storage` on startup|
+|`EXTRA_MOUNT`|`//192.168.8.1/sda1`|(optional) path to mount `/mnt/storage` on startup|
+|`EXTRA_MOUNT_OPTS`|`vers=1.0,username=guest`|(optional) options to mount `/mnt/storage` on startup|
 
 ## Usage
 
