@@ -5,8 +5,8 @@
 ## Requirements
 
 - Raspberry Pi 4 or a similar x64 device supported by BalenaCloud
-- 32GB microSD card & reader
-- External USB drive for video storage
+- (optional) A USB storage device
+- (optional) A network storage share
 
 ## Getting Started
 
@@ -83,6 +83,10 @@ The system path to the mount location(s) are printed in the logs.
 
 Add the storage location in the ZoneMinder dashboard under Options -> Storage -> Add New Storage.
 
+### enable duplicati
+
+Connect to `http://<device-ip>:8200` and configure a new backup using any online service you prefer as the Destination and `/source` as Source Data.
+
 ## Development
 
 ```bash
@@ -108,7 +112,8 @@ Kyle Harding <https://klutchell.dev>
 ## Acknowledgments
 
 - <https://zoneminder.com/>
-- <https://mariadb.com/>
+- <https://hub.docker.com/_/mariadb/>
+- <https://hub.docker.com/r/linuxserver/duplicati>
 
 ## License
 
