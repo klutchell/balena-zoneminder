@@ -3,7 +3,6 @@ version: "2.1"
 volumes:
   zm_events:
   zm_images:
-  zm_logs:
   mariadb:
   duplicati:
 
@@ -11,8 +10,6 @@ services:
   zoneminder:
     build: .
     privileged: true
-    # change shm_size to half your total RAM
-    # eg. 1G = 500M, 2G = 1024M, 4G = 2048M
     shm_size: 2048M
     ports:
       - "80:80/tcp"
@@ -20,7 +17,6 @@ services:
     volumes:
       - "zm_events:/var/cache/zoneminder/events"
       - "zm_images:/var/cache/zoneminder/images"
-      - "zm_logs:/var/log/zm"
     environment:
       ZM_DB_HOST: mariadb
       ZM_DB_NAME: zm
@@ -31,7 +27,7 @@ services:
 
   # https://hub.docker.com/_/mariadb/
   mariadb:
-    image: mariadb:10
+    image: mariadb:10.5
     volumes:
       - "mariadb:/var/lib/mysql"
 
@@ -48,5 +44,4 @@ services:
       - duplicati:/config
       - zm_events:/source/zm_events:ro
       - zm_images:/source/zm_images:ro
-      - zm_logs:/source/zm_logs:ro
       - mariadb:/source/mariadb:ro

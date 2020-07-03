@@ -1,5 +1,5 @@
 
-FROM balenalib/raspberrypi4-64-ubuntu:bionic
+FROM alwaysai/edgeiq:nano-0.14.2
 
 ENV DEBCONF_NONINTERACTIVE_SEEN true
 ENV DEBIAN_FRONTEND noninteractive
@@ -16,7 +16,7 @@ RUN apt-get update \
         file \
         libapache2-mod-php \
         php-fpm \
-        mariadb-server \
+        mariadb-client \
         va-driver-all \
         vdpau-driver-all \
         libvlc-bin \
@@ -29,24 +29,31 @@ RUN apt-get update \
         libmodule-build-perl \
         python3-pip \
         wget \
+        gifsicle \
+        libgeos-dev \
+        python3-dev \
     && a2enconf zoneminder \
     && a2enmod rewrite cgi \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-WORKDIR /opt/es
-
-SHELL ["/bin/bash", "-eo", "pipefail", "-c"]
-
-RUN curl -fsSL https://github.com/pliablepixels/zmeventnotification/archive/v5.13.3.tar.gz -o es.tar.gz \
-    && tar xzf es.tar.gz --strip-components=1 \
     && perl -MCPAN -e "install Net::WebSocket::Server" \
 	&& perl -MCPAN -e "install LWP::Protocol::https" \
 	&& perl -MCPAN -e "install Config::IniFiles" \
 	&& perl -MCPAN -e "install Net::MQTT::Simple" \
 	&& perl -MCPAN -e "install Net::MQTT::Simple::Auth" \
-    && echo "verbose = off" >> ~/.wgetrc \
-    && ./install.sh --no-interactive --install-es --install-config --no-install-hook | tee install.log \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /opt/es
+
+ENV INSTALL_YOLOV3 no
+ENV INSTALL_YOLOV4 no
+ENV INSTALL_TINYYOLOV3 yes
+
+SHELL ["/bin/bash", "-eo", "pipefail", "-c"]
+
+RUN curl -fsSL https://github.com/pliablepixels/zmeventnotification/archive/v5.15.6.tar.gz \
+    | tar xvz --strip-components=1 \
+    && ./install.sh --no-interactive --install-es --install-config --install-hook \
+    | tee install.log \
     && if grep -q ERROR install.log ; then exit 1; fi \
     && rm -rf ./*
 

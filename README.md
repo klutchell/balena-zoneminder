@@ -4,9 +4,8 @@
 
 ## Requirements
 
-- Raspberry Pi 4 or a similar x64 device supported by BalenaCloud
-- (optional) A USB storage device
-- (optional) A network storage share
+- NVIDIA Jetson NANO or similar x64 device supported by BalenaCloud
+- USB storage device for events
 
 ## Getting Started
 
@@ -29,7 +28,7 @@ balena login
 balena push myApp
 
 # OR push to a local device running balenaOS
-balena push mydevice.local --env MYSQL_ROOT_PASSWORD=mysecretpw --env TZ=America/Toronto
+balena push mydevice.local --env MYSQL_ROOT_PASSWORD=topsecret --env TZ=America/Toronto
 ```
 
 ### Application Environment Variables
@@ -39,9 +38,7 @@ Application envionment variables apply to all services within the application, a
 |Name|Example|Purpose|
 |---|---|---|
 |`TZ`|`America/Toronto`|(optional) inform services of the [timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) in your location|
-|`MYSQL_ROOT_PASSWORD`|`mysecretpw`|(required) provide a root password for the mysql database|
-|`EXTRA_MOUNT`|`//192.168.8.1/sda1`|(optional) path to mount `/mnt/storage` on startup|
-|`EXTRA_MOUNT_OPTS`|`vers=1.0,username=guest`|(optional) options to mount `/mnt/storage` on startup|
+|`MYSQL_ROOT_PASSWORD`|`topsecret`|(required) provide a root password for the mysql database|
 
 ## Usage
 
@@ -114,6 +111,10 @@ Kyle Harding <https://klutchell.dev>
 - <https://zoneminder.com/>
 - <https://hub.docker.com/_/mariadb/>
 - <https://hub.docker.com/r/linuxserver/duplicati>
+
+## References
+
+- <https://zmeventnotification.readthedocs.io/en/stable/guides/install.html>
 
 ## License
 
