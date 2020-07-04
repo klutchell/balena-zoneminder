@@ -69,9 +69,9 @@ echo "date.timezone = ${TZ}" >> "${PHPINI}"
 ln -sf "/usr/share/zoneinfo/${TZ}" /etc/localtime
 echo "${TZ}" > /etc/timezone
 
-if ! mysqlshow -u"${ZM_DB_USER}" -p"${ZM_DB_PASS}" -h"${ZM_DB_HOST}" "${ZM_DB_NAME}" 1>/dev/null
+if ! /usr/bin/mysqlshow -u"${ZM_DB_USER}" -p"${ZM_DB_PASS}" -h"${ZM_DB_HOST}" "${ZM_DB_NAME}" 1>/dev/null
 then
-    mysql -u"${ZM_DB_USER}" -p"${ZM_DB_PASS}" -h"${ZM_DB_HOST}" < /usr/share/zoneminder/db/zm_create.sql
+    /usr/bin/mysql -u"${ZM_DB_USER}" -p"${ZM_DB_PASS}" -h"${ZM_DB_HOST}" < /usr/share/zoneminder/db/zm_create.sql
 fi
 
 /usr/bin/zmupdate.pl -nointeractive
@@ -82,7 +82,4 @@ source /etc/apache2/envvars
 
 /usr/bin/zmpkg.pl start
 
-while :
-do
-    sleep 1
-done
+tail -f /dev/null
