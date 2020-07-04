@@ -52,7 +52,7 @@ SHELL ["/bin/bash", "-eo", "pipefail", "-c"]
 
 RUN curl -fsSL https://github.com/pliablepixels/zmeventnotification/archive/v5.15.6.tar.gz | tar xvz --strip-components=1 \
     && ./install.sh --no-interactive --install-es --install-config --install-hook | tee install.log \
-    && if grep -q ERROR install.log ; then exit 1; fi \
+    && if grep -q ERROR install.log ; then exit 1 ; fi \
     && rm -rf ./*
 
 WORKDIR /var/cache/zoneminder

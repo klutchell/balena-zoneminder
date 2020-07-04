@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euo pipefail
+set -uo pipefail
 
 prev_cmd=
 this_cmd=
@@ -60,7 +60,7 @@ echo "date.timezone = ${TZ}" | tee -a "${PHPINI}"
 ln -svf "/usr/share/zoneinfo/${TZ}" /etc/localtime
 echo "${TZ}" | tee /etc/timezone
 
-mysqladmin ping -u${ZM_DB_USER} -p${ZM_DB_PASS} -h${ZM_DB_HOST}
+mysqladmin ping -u"${ZM_DB_USER}" -p"${ZM_DB_PASS}" -h"${ZM_DB_HOST}"
 echo "'${prev_cmd}' returned '$?'"
 
 if ! mysqlshow -u"${ZM_DB_USER}" -p"${ZM_DB_PASS}" -h"${ZM_DB_HOST}" "${ZM_DB_NAME}" 1>/dev/null 2>&1
@@ -83,4 +83,7 @@ echo "'${prev_cmd}' returned '$?'"
 "${ZMPKG}" start
 echo "'${prev_cmd}' returned '$?'"
 
-tail -f /dev/null
+while :
+do
+    sleep 1
+done
