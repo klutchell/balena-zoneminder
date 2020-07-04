@@ -49,6 +49,14 @@ initialize () {
         fi
     done
 
+    # Look in common places for the zoneminder secrets file - secrets.ini
+    for FILE in "/etc/secrets.ini" "/etc/zm/secrets.ini" "/usr/local/etc/secrets.ini" "/usr/local/etc/zm/secrets.ini"; do
+        if [ -f $FILE ]; then
+            ZMSECRETS=$FILE
+            break
+        fi
+    done
+
     # Look in common places for the zoneminder update perl script - zmupdate.pl
     for FILE in "/usr/bin/zmupdate.pl" "/usr/local/bin/zmupdate.pl"; do
         if [ -f $FILE ]; then
@@ -82,7 +90,7 @@ initialize () {
         fi
     done
 
-    for FILE in $ZMCONF $ZMPKG $ZMUPDATE $ZMCREATE $PHPINI $HTTPBIN $MYSQLD; do
+    for FILE in $ZMCONF $ZMSECRETS $ZMPKG $ZMUPDATE $ZMCREATE $PHPINI $HTTPBIN $MYSQLD; do
         if [ -z $FILE ]; then
             echo
             echo "FATAL: This script was unable to determine one or more critical files. Cannot continue."
@@ -91,6 +99,7 @@ initialize () {
             echo "-------------"
             echo
             echo "Path to zm.conf: ${ZMCONF}"
+            echo "Path to secrets.ini: ${ZMSECRETS}"
             echo "Path to zmupdate.pl: ${ZMUPDATE}"
             echo "Path to zmpkg.pl: ${ZMPKG}"
             echo "Path to zm_create.sql: ${ZMCREATE}"
@@ -365,6 +374,12 @@ else
         echo " * ZoneMinder dB already exists, skipping table creation."
     fi
 fi
+
+for param in $(crudini --get --format=sh "${ZMSECRETS}" secrets | awk -F '=' '{print toupper($1)}')
+do
+    [ -n "$(eval "${param}")" ] || continue
+    crudini --set --existing --inplace "${ZMSECRETS}" secrets "${param}" "$(eval "${param}")"
+done
 
 # Ensure we shutdown our services cleanly when we are told to stop
 trap cleanup SIGTERM
