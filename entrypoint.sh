@@ -60,9 +60,6 @@ echo "date.timezone = ${TZ}" | tee -a "${PHPINI}"
 ln -svf "/usr/share/zoneinfo/${TZ}" /etc/localtime
 echo "${TZ}" | tee /etc/timezone
 
-mysqladmin ping -u"${ZM_DB_USER}" -p"${ZM_DB_PASS}" -h"${ZM_DB_HOST}"
-echo "'${prev_cmd}' returned '$?'"
-
 if ! mysqlshow -u"${ZM_DB_USER}" -p"${ZM_DB_PASS}" -h"${ZM_DB_HOST}" "${ZM_DB_NAME}" 1>/dev/null 2>&1
 then
     mysql -u"${ZM_DB_USER}" -p"${ZM_DB_PASS}" -h"${ZM_DB_HOST}" < "${ZMCREATE}"
