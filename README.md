@@ -39,8 +39,8 @@ Application envionment variables apply to all services within the application, a
 |---|---|---|
 |`TZ`|`America/Toronto`|(optional) inform services of the [timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) in your location|
 |`MYSQL_ROOT_PASSWORD`|`topsecret`|(required) provide a root password for the mysql database|
-|`ZM_USER`|`admin`|the username used to log into your ZM web console|
-|`ZM_PASSWORD`|`topsecret`|the password for your ZM web console|
+|`ZM_USER`|`admin`|the username used to log into your ZM web console (set in dashboard first)|
+|`ZM_PASSWORD`|`supersecret`|the password for your ZM web console (set in dashboard first)|
 |`ZM_PORTAL`|`http://zm.192.168.8.3.nip.io/zm`|the URL for your ZM instance|
 |`ZM_API_PORTAL`|`http://zm.192.168.8.3.nip.io/zm/api`|the URL for your ZM API instance|
 
