@@ -10,7 +10,6 @@ services:
   zoneminder:
     build: .
     privileged: true
-    # shm_size: 2048M
     ports:
       - "80:80/tcp"
       - "9000:9000/tcp"
@@ -23,14 +22,21 @@ services:
       ZM_DB_NAME: zm
       ZM_DB_USER: zmuser
       ZM_DB_PASS: zmpass
-    links:
-      - mariadb
 
   # https://hub.docker.com/_/mariadb/
   mariadb:
     image: mariadb:10.5
     volumes:
       - "mariadb:/var/lib/mysql"
+  
+  mysqldump:
+    image: mariadb:10.5
+    volumes:
+      - "mariadb:/var/lib/mysql"
+    command:
+      - "/bin/bash"
+      - "-c"
+      - "while : ; do mysqldump -h mariadb -u root -p${MYSQL_ROOT_PASSWORD} -d zm > /var/lib/mysql/mysqldump.sql ; sleep 14400 ; done"             
 
   # https://hub.docker.com/r/linuxserver/duplicati
   duplicati:
