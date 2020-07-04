@@ -38,7 +38,7 @@ sed "s|ZM_DB_HOST=.*$|ZM_DB_HOST=${ZM_DB_HOST}|" -i "${ZMCONF}"
 
 # https://github.com/pliablepixels/zmeventnotification/blob/master/secrets.ini
 crudini --verbose --set --inplace "${SECRETSINI}" secrets ZM_USER "${ZM_USER:-admin}"
-crudini --verbose --set --inplace "${SECRETSINI}" secrets ZM_PASSWORD "${ZM_PASSWORD:-}"
+crudini --verbose --set --inplace "${SECRETSINI}" secrets ZM_PASSWORD "${ZM_PASSWORD}"
 crudini --verbose --set --inplace "${SECRETSINI}" secrets ZM_PORTAL "${ZM_PORTAL}"
 crudini --verbose --set --inplace "${SECRETSINI}" secrets ZM_API_PORTAL "${ZM_API_PORTAL}"
 crudini --verbose --set --inplace "${SECRETSINI}" secrets ZMES_PICTURE_URL "${ZMES_PICTURE_URL}"
@@ -60,6 +60,7 @@ crudini --verbose --set --inplace "${EVENTSINI}" mqtt enable "${MQTT_ENABLE:-no}
 crudini --verbose --set --inplace "${EVENTSINI}" mqtt server "${MQTT_SERVER}"
 crudini --verbose --set --inplace "${EVENTSINI}" mqtt username "!MQTT_USERNAME"
 crudini --verbose --set --inplace "${EVENTSINI}" mqtt password "!MQTT_PASSWORD"
+crudini --verbose --set --inplace "${EVENTSINI}" mqtt retain "${MQTT_RETAIN:-no}"
 crudini --verbose --set --inplace "${EVENTSINI}" ssl enable "${SSL_ENABLE:-no}"
 crudini --verbose --set --inplace "${EVENTSINI}" ssl cert "!ES_CERT_FILE"
 crudini --verbose --set --inplace "${EVENTSINI}" ssl key "!ES_KEY_FILE"
@@ -68,17 +69,15 @@ echo "date.timezone = ${TZ}" >> "${PHPINI}"
 ln -sf "/usr/share/zoneinfo/${TZ}" /etc/localtime
 echo "${TZ}" > /etc/timezone
 
-source /etc/apache2/envvars
-
-if ! mysqlshow -u"${ZM_DB_USER}" -p"${ZM_DB_PASS}" -h"${ZM_DB_HOST}" "${ZM_DB_NAME}"
+if ! mysqlshow -u"${ZM_DB_USER}" -p"${ZM_DB_PASS}" -h"${ZM_DB_HOST}" "${ZM_DB_NAME}" 1>/dev/null
 then
     mysql -u"${ZM_DB_USER}" -p"${ZM_DB_PASS}" -h"${ZM_DB_HOST}" < /usr/share/zoneminder/db/zm_create.sql
 fi
 
 /usr/bin/zmupdate.pl -nointeractive
-
 /usr/bin/zmupdate.pl -f
 
+source /etc/apache2/envvars
 /usr/sbin/apache2 -k start
 
 /usr/bin/zmpkg.pl start
