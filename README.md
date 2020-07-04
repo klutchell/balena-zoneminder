@@ -118,9 +118,10 @@ Kyle Harding <https://klutchell.dev>
 
 ## References
 
+- <https://zoneminder.readthedocs.io/en/stable/installationguide/easydocker.html>
+- <https://zmeventnotification.readthedocs.io/en/stable/guides/install.html>
 - <https://github.com/ZoneMinder/zmdockerfiles>
 - <https://github.com/dlandon/zoneminder>
-- <https://zmeventnotification.readthedocs.io/en/stable/guides/install.html>
 
 ## License
 

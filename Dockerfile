@@ -32,6 +32,7 @@ RUN apt-get update \
         gifsicle \
         libgeos-dev \
         python3-dev \
+        crudini \
     && a2enconf zoneminder \
     && a2enmod rewrite cgi \
     && perl -MCPAN -e "install Net::WebSocket::Server" \
