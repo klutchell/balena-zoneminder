@@ -50,6 +50,10 @@ crudini --verbose --set --inplace "${EVENTSINI}" ssl enable "${SSL_ENABLE:-no}"
 crudini --verbose --set --inplace "${EVENTSINI}" ssl cert "!ES_CERT_FILE"
 crudini --verbose --set --inplace "${EVENTSINI}" ssl key "!ES_KEY_FILE"
 
+echo "date.timezone = ${TZ:-UTC}" >> /etc/php/7.2/apache2/php.ini
+ln -sf "/usr/share/zoneinfo/${TZ:-UTC}" /etc/localtime
+echo "${TZ:-UTC}" > /etc/timezone
+
 umount -v /dev/shm
 mount -v -t tmpfs -o rw,nosuid,nodev,noexec,relatime,size="${SHMEM:-"50%"}" tmpfs /dev/shm
 
