@@ -36,7 +36,7 @@ services:
     command:
       - "/bin/bash"
       - "-c"
-      - "while : ; do mysqldump -h mariadb -u root -p${MYSQL_ROOT_PASSWORD} -d zm > /var/lib/mysql/mysqldump.sql ; sleep ${INTERVAL} ; done"
+      - "while : ; sleep ${INTERVAL} ; do mysqldump -h mariadb -u root -p${MYSQL_ROOT_PASSWORD} -d zm > /var/lib/mysql/mysqldump.sql ; done"
     environment:
       INTERVAL: 14400
 
