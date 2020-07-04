@@ -36,7 +36,9 @@ services:
     command:
       - "/bin/bash"
       - "-c"
-      - "while : ; do mysqldump -h mariadb -u root -p${MYSQL_ROOT_PASSWORD} -d zm > /var/lib/mysql/mysqldump.sql ; sleep 14400 ; done"             
+      - "while : ; do mysqldump -h mariadb -u root -p${MYSQL_ROOT_PASSWORD} -d zm > /var/lib/mysql/mysqldump.sql ; sleep ${INTERVAL} ; done"
+    environment:
+      INTERVAL: 14400
 
   # https://hub.docker.com/r/linuxserver/duplicati
   duplicati:

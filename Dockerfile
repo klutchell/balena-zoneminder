@@ -17,7 +17,6 @@ RUN apt-get update \
         libapache2-mod-php \
         php-fpm \
         mariadb-client \
-        mariadb-server \
         va-driver-all \
         vdpau-driver-all \
         libvlc-bin \
@@ -33,7 +32,6 @@ RUN apt-get update \
         gifsicle \
         libgeos-dev \
         python3-dev \
-        crudini \
     && a2enconf zoneminder \
     && a2enmod rewrite cgi \
     && perl -MCPAN -e "install Net::WebSocket::Server" \
@@ -57,8 +55,10 @@ RUN curl -fsSL https://github.com/pliablepixels/zmeventnotification/archive/v5.1
     && if grep -q ERROR install.log ; then exit 1; fi \
     && rm -rf ./*
 
-COPY mount.sh entrypoint.sh /
+WORKDIR /var/cache/zoneminder
 
-RUN chmod a+x /entrypoint.sh /mount.sh
+COPY entrypoint.sh /
 
-ENTRYPOINT [ "/bin/sh", "-c", "/mount.sh && /entrypoint.sh" ]
+RUN chmod a+x /entrypoint.sh
+
+ENTRYPOINT [ "/entrypoint.sh" ]
