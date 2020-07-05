@@ -3,6 +3,7 @@
 ZMCONF=/etc/zm/conf.d/03-custom.conf
 EVENTSINI=/etc/zm/zmeventnotification.ini
 SECRETSINI=/etc/zm/secrets.ini
+OBJECTINI=/etc/zm/objectconfig.ini
 
 cleanup () {
     /usr/sbin/apache2 -k stop
@@ -49,6 +50,18 @@ crudini --verbose --set --inplace "${EVENTSINI}" mqtt retain "${MQTT_RETAIN:-no}
 crudini --verbose --set --inplace "${EVENTSINI}" ssl enable "${SSL_ENABLE:-no}"
 crudini --verbose --set --inplace "${EVENTSINI}" ssl cert "!ES_CERT_FILE"
 crudini --verbose --set --inplace "${EVENTSINI}" ssl key "!ES_KEY_FILE"
+
+# https://github.com/pliablepixels/zmeventnotification/blob/master/hook/objectconfig.ini
+crudini --verbose --set --inplace "${OBJECTINI}" general models "yolo"
+crudini --verbose --set --inplace "${OBJECTINI}" yolo yolo_type "tiny"
+crudini --verbose --set --inplace "${OBJECTINI}" yolo tiny_config "{{base_data_path}}/models/tinyyolo/yolov3-tiny.cfg"
+crudini --verbose --set --inplace "${OBJECTINI}" yolo tiny_weights "{{base_data_path}}/models/tinyyolo/yolov3-tiny.weights"
+crudini --verbose --set --inplace "${OBJECTINI}" yolo tiny_labels "{{base_data_path}}/models/tinyyolo/coco.names"
+
+for i in {1..99}
+do
+   crudini --del --inplace "${OBJECTINI}" "monitor-${i}"
+done
 
 echo "date.timezone = ${TZ:-UTC}" >> /etc/php/7.2/apache2/php.ini
 ln -sf "/usr/share/zoneinfo/${TZ:-UTC}" /etc/localtime

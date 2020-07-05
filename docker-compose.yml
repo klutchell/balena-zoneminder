@@ -48,7 +48,7 @@ services:
       PGID: "0"
       CLI_ARGS: --webservice-interface=any
     ports:
-      - 8200:8200/tcp
+      - 8201:8200/tcp
     volumes:
       - duplicati:/config
       - zm_events:/source/zm_events:ro
