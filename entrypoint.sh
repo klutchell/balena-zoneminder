@@ -42,8 +42,10 @@ EOF
 [ -n "${PUSHOVER_USER_KEY}" ]               && crudini --verbose --set --inplace "${SECRETSINI}" secrets PUSHOVER_USER_KEY "${PUSHOVER_USER_KEY}"
 
 # https://github.com/pliablepixels/zmeventnotification/blob/master/zmeventnotification.ini
+crudini --verbose --set --inplace "${EVENTSINI}" network address "0.0.0.0"
 crudini --verbose --set --inplace "${EVENTSINI}" mqtt enable "${MQTT_ENABLE:-no}"
-crudini --verbose --set --inplace "${EVENTSINI}" mqtt server "${MQTT_SERVER}"
+[ -n "${MQTT_SERVER}" ] && crudini --verbose --set --inplace "${EVENTSINI}" mqtt server "${MQTT_SERVER}"
+[ -n "${MQTT_TOPIC}" ] && crudini --verbose --set --inplace "${EVENTSINI}" mqtt topic "${MQTT_TOPIC}"
 crudini --verbose --set --inplace "${EVENTSINI}" mqtt username "!MQTT_USERNAME"
 crudini --verbose --set --inplace "${EVENTSINI}" mqtt password "!MQTT_PASSWORD"
 crudini --verbose --set --inplace "${EVENTSINI}" mqtt retain "${MQTT_RETAIN:-no}"
@@ -53,10 +55,12 @@ crudini --verbose --set --inplace "${EVENTSINI}" ssl key "!ES_KEY_FILE"
 
 # https://github.com/pliablepixels/zmeventnotification/blob/master/hook/objectconfig.ini
 crudini --verbose --set --inplace "${OBJECTINI}" general models "yolo"
+[ -n "${DETECT_PATTERN}" ] && crudini --verbose --set --inplace "${OBJECTINI}" general detect_pattern "${DETECT_PATTERN}"
 crudini --verbose --set --inplace "${OBJECTINI}" yolo yolo_type "tiny"
 crudini --verbose --set --inplace "${OBJECTINI}" yolo tiny_config "{{base_data_path}}/models/tinyyolo/yolov3-tiny.cfg"
 crudini --verbose --set --inplace "${OBJECTINI}" yolo tiny_weights "{{base_data_path}}/models/tinyyolo/yolov3-tiny.weights"
 crudini --verbose --set --inplace "${OBJECTINI}" yolo tiny_labels "{{base_data_path}}/models/tinyyolo/coco.names"
+
 
 for i in {1..99}
 do

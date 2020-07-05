@@ -3,6 +3,7 @@ version: "2.1"
 volumes:
   zm_events:
   zm_images:
+  zm_tokens:
   mariadb:
   duplicati:
 
@@ -16,6 +17,7 @@ services:
     volumes:
       - "zm_events:/var/cache/zoneminder/events"
       - "zm_images:/var/cache/zoneminder/images"
+      - "zm_tokens:/var/lib/zmeventnotification/push"
     environment:
       SHMEM: 50%
       ZM_DB_HOST: mariadb

@@ -56,7 +56,7 @@ RUN curl -fsSL https://github.com/pliablepixels/zmeventnotification/archive/v5.1
     && if grep -q ERROR install.log ; then exit 1 ; fi \
     && rm -rf ./*
 
-WORKDIR /var/cache/zoneminder
+WORKDIR /etc/zm
 
 COPY entrypoint.sh /
 
