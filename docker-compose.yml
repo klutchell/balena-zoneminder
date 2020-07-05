@@ -24,6 +24,8 @@ services:
       ZM_DB_NAME: zm
       ZM_DB_USER: zmuser
       ZM_DB_PASS: zmpass
+    tmpfs:
+      - /var/log
 
   # https://hub.docker.com/_/mariadb/
   mariadb:
@@ -55,4 +57,5 @@ services:
       - duplicati:/config
       - zm_events:/source/zm_events:ro
       - zm_images:/source/zm_images:ro
+      - zm_tokens:/source/zm_tokens:ro
       - mariadb:/source/mariadb:ro

@@ -61,7 +61,6 @@ crudini --verbose --set --inplace "${OBJECTINI}" yolo tiny_config "{{base_data_p
 crudini --verbose --set --inplace "${OBJECTINI}" yolo tiny_weights "{{base_data_path}}/models/tinyyolo/yolov3-tiny.weights"
 crudini --verbose --set --inplace "${OBJECTINI}" yolo tiny_labels "{{base_data_path}}/models/tinyyolo/coco.names"
 
-
 for i in {1..99}
 do
    crudini --del --inplace "${OBJECTINI}" "monitor-${i}"
@@ -71,8 +70,15 @@ echo "date.timezone = ${TZ:-UTC}" >> /etc/php/7.2/apache2/php.ini
 ln -sf "/usr/share/zoneinfo/${TZ:-UTC}" /etc/localtime
 echo "${TZ:-UTC}" > /etc/timezone
 
-umount -v /dev/shm
-mount -v -t tmpfs -o rw,nosuid,nodev,noexec,relatime,size="${SHMEM:-"50%"}" tmpfs /dev/shm
+# move existing /var/log to tmpfs
+mkdir /mnt/root
+mount --bind / /mnt/root
+mv /mnt/root/var/log/* /var/log/
+umount /mnt/root
+rm -rf /mnt/root
+
+umount /dev/shm
+mount -t tmpfs -o rw,nosuid,nodev,noexec,relatime,size="${SHMEM:-"50%"}" tmpfs /dev/shm
 
 for uuid in $(blkid -sUUID -ovalue /dev/sd??)
 do
