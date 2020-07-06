@@ -13,6 +13,25 @@ cleanup () {
 
 trap cleanup SIGTERM
 
+echo "date.timezone = ${TZ:-UTC}" >> /etc/php/7.2/apache2/php.ini
+ln -sf "/usr/share/zoneinfo/${TZ:-UTC}" /etc/localtime
+echo "${TZ:-UTC}" > /etc/timezone
+
+mkdir -v /var/log/apache2
+chown -v root:adm /var/log/apache2
+mkdir -v /var/log/zm
+chown -v www-data:root /var/log/zm
+
+umount -v /dev/shm
+mount -v -t tmpfs -o rw,nosuid,nodev,noexec,relatime,size="${SHMEM:-"50%"}" tmpfs /dev/shm
+
+for uuid in $(blkid -sUUID -ovalue /dev/sd??)
+do
+    mkdir -v /media/"${uuid}" 2>/dev/null
+    mount -v UUID="${uuid}" /media/"${uuid}"
+    chown -v www-data:www-data /media/"${uuid}"
+done
+
 # https://zoneminder.readthedocs.io/en/stable/userguide/configfiles.html
 # https://github.com/ZoneMinder/zoneminder/blob/master/zm.conf.in
 cat > "${ZMCONF}" << EOF
@@ -64,27 +83,6 @@ crudini --verbose --set --inplace "${OBJECTINI}" yolo tiny_labels "{{base_data_p
 for i in {1..99}
 do
    crudini --del --inplace "${OBJECTINI}" "monitor-${i}"
-done
-
-echo "date.timezone = ${TZ:-UTC}" >> /etc/php/7.2/apache2/php.ini
-ln -sf "/usr/share/zoneinfo/${TZ:-UTC}" /etc/localtime
-echo "${TZ:-UTC}" > /etc/timezone
-
-# move existing /var/log to tmpfs
-mkdir /mnt/root
-mount --bind / /mnt/root
-mv /mnt/root/var/log/* /var/log/
-umount /mnt/root
-rm -rf /mnt/root
-
-umount /dev/shm
-mount -t tmpfs -o rw,nosuid,nodev,noexec,relatime,size="${SHMEM:-"50%"}" tmpfs /dev/shm
-
-for uuid in $(blkid -sUUID -ovalue /dev/sd??)
-do
-    mkdir -v /media/"${uuid}" 2>/dev/null
-    mount -v UUID="${uuid}" /media/"${uuid}"
-    chown -v www-data:www-data /media/"${uuid}"
 done
 
 if ! /usr/bin/mysqlshow -u"${ZM_DB_USER}" -p"${ZM_DB_PASS}" -h"${ZM_DB_HOST}" "${ZM_DB_NAME}" 1>/dev/null
