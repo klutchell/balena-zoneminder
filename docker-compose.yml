@@ -19,13 +19,14 @@ services:
       - "zm_images:/var/cache/zoneminder/images"
       - "zm_tokens:/var/lib/zmeventnotification/push"
     environment:
-      SHMEM: 50%
+      # SHMEM: 50%
       ZM_DB_HOST: mariadb
       ZM_DB_NAME: zm
       ZM_DB_USER: zmuser
       ZM_DB_PASS: zmpass
     tmpfs:
       - /var/log
+    shm_size: 2048M
 
   # https://hub.docker.com/_/mariadb/
   mariadb:

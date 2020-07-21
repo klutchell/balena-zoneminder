@@ -22,8 +22,11 @@ chown -v root:adm /var/log/apache2
 mkdir -v /var/log/zm
 chown -v www-data:root /var/log/zm
 
-umount -v /dev/shm
-mount -v -t tmpfs -o rw,nosuid,nodev,noexec,relatime,size="${SHMEM:-"50%"}" tmpfs /dev/shm
+if [ -n "${SHMEM}" ]
+then
+    umount -v /dev/shm
+    mount -v -t tmpfs -o rw,nosuid,nodev,noexec,relatime,size="${SHMEM}" tmpfs /dev/shm
+fi
 
 for uuid in $(blkid -sUUID -ovalue /dev/sd??)
 do
