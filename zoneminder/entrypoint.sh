@@ -28,12 +28,13 @@ then
     mount -v -t tmpfs -o rw,nosuid,nodev,noexec,relatime,size="${SHMEM}" tmpfs /dev/shm
 fi
 
-for uuid in $(blkid -sUUID -ovalue /dev/sd??)
-do
-    mkdir -v /media/"${uuid}" 2>/dev/null
-    mount -v UUID="${uuid}" /media/"${uuid}"
-    chown -v www-data:www-data /media/"${uuid}"
-done
+mkdir -v -p /var/cache/zoneminder/events
+mount -v LABEL="ZONEMINDER" /var/cache/zoneminder/events
+
+chown -v www-data:www-data /var/cache/zoneminder/cache
+chown -v www-data:www-data /var/cache/zoneminder/events
+chown -v www-data:www-data /var/cache/zoneminder/images
+chown -v www-data:www-data /var/cache/zoneminder/temp
 
 # https://zoneminder.readthedocs.io/en/stable/userguide/configfiles.html
 # https://github.com/ZoneMinder/zoneminder/blob/master/zm.conf.in

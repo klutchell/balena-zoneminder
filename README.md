@@ -69,20 +69,16 @@ Connect to the `Host OS` Terminal and run the following:
 ```bash
 # g - create a new empty GPT partition table
 # n - add a new partition
-# p - primary partition
 # 1 - partition number 1
 # default - start at beginning of disk
 # default - extend partition to end of disk
+# y - overwrite existing filesystem
 # w - write the partition table
-printf "g\nn\np\n1\n\n\nw\n" | fdisk /dev/sda
-mkfs.ext4 /dev/sda1
+printf "g\nn\n1\n\n\ny\nw\n" | fdisk /dev/sda
+mkfs.ext4 /dev/sda1 -L ZONEMINDER
 ```
 
-Restart the `zoneminder` service and any supported partitions will be mounted at `/media/{UUID}`.
-
-The system path to the mount location(s) are printed in the logs.
-
-Add the storage location in the ZoneMinder dashboard under Options -> Storage -> Add New Storage.
+Restart the `zoneminder` service and the new partition with `LABEL=ZONEMINDER` will be mounted at `/var/cache/zoneminder/events`.
 
 ### enable duplicati
 

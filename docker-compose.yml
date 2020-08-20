@@ -1,7 +1,7 @@
 version: "2.1"
 
 volumes:
-  zm_events:
+  zm_cache:
   zm_images:
   zm_tokens:
   mariadb:
@@ -9,54 +9,55 @@ volumes:
 
 services:
   zoneminder:
-    build: .
+    build: zoneminder
     privileged: true
     ports:
-      - "80:80/tcp"
-      - "9000:9000/tcp"
+      - 80:80/tcp
+      - 9000:9000/tcp
     volumes:
-      - "zm_events:/var/cache/zoneminder/events"
-      - "zm_images:/var/cache/zoneminder/images"
-      - "zm_tokens:/var/lib/zmeventnotification/push"
+      - zm_cache:/var/cache/zoneminder/cache
+      - zm_images:/var/cache/zoneminder/images
+      - zm_tokens:/var/lib/zmeventnotification/push
     environment:
-      # SHMEM: 50%
       ZM_DB_HOST: mariadb
       ZM_DB_NAME: zm
       ZM_DB_USER: zmuser
       ZM_DB_PASS: zmpass
     tmpfs:
       - /var/log
+      - /var/cache/zoneminder/temp
     shm_size: 2048M
+    depends_on:
+      - mariadb
 
   # https://hub.docker.com/_/mariadb/
   mariadb:
-    image: mariadb:10.5
+    build: mariadb
     volumes:
-      - "mariadb:/var/lib/mysql"
+      - mariadb:/var/lib/mysql
   
+  # https://hub.docker.com/_/mariadb/
   mysqldump:
-    image: mariadb:10.5
-    volumes:
-      - "mariadb:/var/lib/mysql"
-    command:
-      - "/bin/bash"
-      - "-c"
-      - "while : ; sleep ${INTERVAL} ; do mysqldump -h mariadb -u root -p${MYSQL_ROOT_PASSWORD} -d zm > /var/lib/mysql/mysqldump.sql ; done"
+    build: mariadb
+    command: "/mysqldump.sh"
     environment:
-      INTERVAL: 14400
+      MYSQL_DATABASE: zoneminder
+    volumes:
+      - mariadb:/var/lib/mysql
+    depends_on:
+      - mariadb
 
   # https://hub.docker.com/r/linuxserver/duplicati
   duplicati:
-    image: linuxserver/duplicati:arm64v8-latest
+    image: linuxserver/duplicati
     environment:
       PUID: "0"
       PGID: "0"
       CLI_ARGS: --webservice-interface=any
     ports:
-      - 8201:8200/tcp
+      - 8200:8200/tcp
     volumes:
       - duplicati:/config
-      - zm_events:/source/zm_events:ro
-      - zm_images:/source/zm_images:ro
-      - zm_tokens:/source/zm_tokens:ro
-      - mariadb:/source/mariadb:ro
+      - zm_images:/source/zm_images
+      - zm_tokens:/source/zm_tokens
+      - mariadb:/source/mariadb
