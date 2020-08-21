@@ -1,7 +1,6 @@
 version: "2.1"
 
 volumes:
-  zm_cache:
   zm_images:
   zm_tokens:
   mariadb:
@@ -15,7 +14,6 @@ services:
       - 80:80/tcp
       - 9000:9000/tcp
     volumes:
-      - zm_cache:/var/cache/zoneminder/cache
       - zm_images:/var/cache/zoneminder/images
       - zm_tokens:/var/lib/zmeventnotification/push
     environment:
@@ -26,6 +24,7 @@ services:
     tmpfs:
       - /var/log
       - /var/cache/zoneminder/temp
+      - /var/cache/zoneminder/cache
     shm_size: 2048M
     depends_on:
       - mariadb
