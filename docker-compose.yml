@@ -40,7 +40,7 @@ services:
     build: mariadb
     command: "/mysqldump.sh"
     environment:
-      MYSQL_DATABASE: zoneminder
+      MYSQL_DATABASE: zm
     volumes:
       - mariadb:/var/lib/mysql
     depends_on:
