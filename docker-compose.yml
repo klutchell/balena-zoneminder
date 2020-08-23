@@ -36,9 +36,9 @@ services:
       - mariadb:/var/lib/mysql
   
   # https://hub.docker.com/_/mariadb/
-  mysqldump:
+  sqldump:
     build: mariadb
-    command: "/mysqldump.sh"
+    command: "/sqldump.sh"
     environment:
       MYSQL_DATABASE: zm
     volumes:

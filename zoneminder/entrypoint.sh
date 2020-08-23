@@ -45,6 +45,12 @@ ZM_DB_PASS=${ZM_DB_PASS:-zmpass}
 ZM_DB_NAME=${ZM_DB_NAME:-zm}
 EOF
 
+if [ -n "${ZM_PORTAL}" ]
+then
+    [ -n "${ZM_API_PORTAL}" ] || ZM_API_PORTAL="${ZM_PORTAL}/api"
+    [ -n "${ZMES_PICTURE_URL}" ] || ZMES_PICTURE_URL="${ZM_PORTAL}/index.php?view=image&eid=EVENTID&fid=objdetect&width=600"
+fi
+
 # https://github.com/pliablepixels/zmeventnotification/blob/master/secrets.ini
 [ -n "${ZM_USER}" ]                         && crudini --verbose --set --inplace "${SECRETSINI}" secrets ZM_USER "${ZM_USER}"
 [ -n "${ZM_PASSWORD}" ]                     && crudini --verbose --set --inplace "${SECRETSINI}" secrets ZM_PASSWORD "${ZM_PASSWORD}"
