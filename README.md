@@ -9,27 +9,13 @@
 
 ## Getting Started
 
-To get started you'll first need to sign up for a free balenaCloud account and flash your device.
+You can one-click-deploy this project to balena using the button below:
 
-<https://www.balena.io/docs/learn/getting-started>
+[![](https://balena.io/deploy.png)](https://dashboard.balena-cloud.com/deploy)
 
-## Deployment
+## Manual Deployment
 
-Deployment is carried out by downloading the project and pushing it to your device either via Git or the balena CLI.
-
-<https://www.balena.io/docs/reference/balena-cli/>
-
-```bash
-# clone project
-git clone https://github.com/klutchell/balena-zoneminder.git
-
-# push to balenaCloud
-balena login
-balena push myApp
-
-# OR push to a local device running balenaOS
-balena push mydevice.local --env MYSQL_ROOT_PASSWORD=topsecret --env TZ=America/Toronto
-```
+Alternatively, deployment can be carried out by manually creating a [balenaCloud account](https://dashboard.balena-cloud.com) and application, flashing a device, downloading the project and pushing it via either Git or the [balena CLI](https://github.com/balena-io/balena-cli).
 
 ### Application Environment Variables
 
@@ -102,9 +88,7 @@ Please open an issue or submit a pull request with any features, fixes, or chang
 
 Kyle Harding <https://klutchell.dev>
 
-[Buy me a beer](https://kyles-tip-jar.myshopify.com/cart/31356319498262:1?channel=buy_button)
-
-[Buy me a craft beer](https://kyles-tip-jar.myshopify.com/cart/31356317859862:1?channel=buy_button)
+<a href="https://www.buymeacoffee.com/klutchell" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" style="height: 51px !important;width: 217px !important;" ></a>
 
 ## Acknowledgments
 
