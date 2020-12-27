@@ -1,3 +1,16 @@
-applicationEnvironmentVariables:
-    - TZ: 'America/Toronto'
+version: "2"
+slug: "zoneminder"
+name: "Zoneminder"
+type: "sw.application"
+assets:
+  - url: "https://github.com/klutchell/balena-zoneminder"
+    name: "repository"
+  - url: "https://raw.githubusercontent.com/klutchell/balena-zoneminder/main/logo.png"
+    name: "logo"
+data:
+  description: "A full-featured, open source, state-of-the-art video surveillance software system."
+  applicationEnvironmentVariables:
     - MYSQL_ROOT_PASSWORD: 'topsecret'
+  defaultDeviceType: "jetson-nano"
+  supportedDeviceTypes:
+    - "jetson-nano"

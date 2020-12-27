@@ -1,62 +1,41 @@
 version: "2.1"
 
 volumes:
+  zm_events:
   zm_images:
   zm_tokens:
-  mariadb:
-  duplicati:
+  db:
 
 services:
-  zoneminder:
-    build: zoneminder
+  zm:
+    build: zm
     privileged: true
     ports:
       - 80:80/tcp
       - 9000:9000/tcp
     volumes:
+      - zm_events:/var/cache/zoneminder/events
       - zm_images:/var/cache/zoneminder/images
       - zm_tokens:/var/lib/zmeventnotification/push
-    environment:
-      ZM_DB_HOST: mariadb
-      ZM_DB_NAME: zm
-      ZM_DB_USER: zmuser
-      ZM_DB_PASS: zmpass
     tmpfs:
       - /var/log
       - /var/cache/zoneminder/temp
       - /var/cache/zoneminder/cache
     shm_size: 2048M
     depends_on:
-      - mariadb
+      - db
 
   # https://hub.docker.com/_/mariadb/
-  mariadb:
-    build: mariadb
+  db:
+    build: db
     volumes:
-      - mariadb:/var/lib/mysql
+      - db:/var/lib/mysql
   
   # https://hub.docker.com/_/mariadb/
   sqldump:
-    build: mariadb
+    build: db
     command: "/sqldump.sh"
-    environment:
-      MYSQL_DATABASE: zm
     volumes:
-      - mariadb:/var/lib/mysql
+      - db:/var/lib/mysql
     depends_on:
-      - mariadb
-
-  # https://hub.docker.com/r/linuxserver/duplicati
-  duplicati:
-    image: linuxserver/duplicati
-    environment:
-      PUID: "0"
-      PGID: "0"
-      CLI_ARGS: --webservice-interface=any
-    ports:
-      - 8200:8200/tcp
-    volumes:
-      - duplicati:/config
-      - zm_images:/source/zm_images
-      - zm_tokens:/source/zm_tokens
-      - mariadb:/source/mariadb
+      - db
