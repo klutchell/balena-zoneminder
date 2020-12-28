@@ -46,9 +46,9 @@ RUN apt-get update && apt-get install --no-install-recommends -y curl gnupg && \
 # https://github.com/pliablepixels/zmeventnotification/releases
 ARG ZMES_RELEASE=v6.0.6
 ARG INSTALL_YOLOV3=no
-ARG INSTALL_TINYYOLOV3=yes
+ARG INSTALL_TINYYOLOV3=no
 ARG INSTALL_YOLOV4=no
-ARG INSTALL_TINYYOLOV4=no
+ARG INSTALL_TINYYOLOV4=yes
 ARG INSTALL_CORAL_EDGETPU=no
 
 # install script for the EventServer and the machine learning hooks
