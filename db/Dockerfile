@@ -1,5 +1,7 @@
-FROM mariadb:10.5.5
+FROM arm64v8/mariadb:10.5.5
 
 COPY sqldump.sh /sqldump.sh
 
 RUN chmod +x /sqldump.sh
+
+ENV MYSQL_DATABASE zm
