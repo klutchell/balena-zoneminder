@@ -82,23 +82,21 @@ ENV ZM_DB_HOST=db \
 
 # default secrets values
 # https://github.com/pliablepixels/zmeventnotification/blob/master/secrets.ini
-ENV ZM_USER=admin \
-    ZM_PASSWORD=admin \
-    ES_ADMIN_INTERFACE_PASSWORD=your_admin_interface_password \
-    ZM_PORTAL=https://portal/zm \
-    ZM_API_PORTAL=${ZM_PORTAL}/api \
-    ZMES_PICTURE_URL=${ZM_PORTAL}/index.php?view=image&eid=EVENTID&fid=objdetect&width=600 \
-    ES_CERT_FILE=/path/to/cert/file.pem \
-    ES_KEY_FILE=/path/to/key/file.pem \
-    ML_USER=your_mlapi_user \
-    ML_PASSWORD=your_mlapi_password \
-    PLATEREC_ALPR_KEY=your_plate_recognizer_api_key \
-    OPENALPR_ALPR_KEY=your_openalpr_api_key \
-    ESCONTROL_INTERFACE_PASSWORD=yourescontrolpassword \
-    MQTT_USERNAME=your_mqtt_username \
-    MQTT_PASSWORD=your_mqtt_password \
-    PUSHOVER_APP_TOKEN=your_pushover_app_token \
-    PUSHOVER_USER_KEY=your_pushover_user_key
+ENV ZM_PORTAL="https://portal/zm" \
+    ZM_USER="admin" \
+    ZM_PASSWORD="admin" \
+    ES_ADMIN_INTERFACE_PASSWORD="your_admin_interface_password" \
+    ES_CERT_FILE="/path/to/cert/file.pem" \
+    ES_KEY_FILE="/path/to/key/file.pem" \
+    ML_USER="your_mlapi_user" \
+    ML_PASSWORD="your_mlapi_password" \
+    PLATEREC_ALPR_KEY="your_plate_recognizer_api_key" \
+    OPENALPR_ALPR_KEY="your_openalpr_api_key" \
+    ESCONTROL_INTERFACE_PASSWORD="yourescontrolpassword" \
+    MQTT_USERNAME="your_mqtt_username" \
+    MQTT_PASSWORD="your_mqtt_password" \
+    PUSHOVER_APP_TOKEN="your_pushover_app_token" \
+    PUSHOVER_USER_KEY="your_pushover_user_key"
 
 # set default timezone
 ENV TZ UTC
