@@ -2,6 +2,10 @@
 
 [ZoneMinder](https://www.zoneminder.com/) is a full-featured, open source, state-of-the-art video surveillance software system.
 
+## Requirements
+
+- Jetson Nano with 16GB+ microSD card
+
 ## Getting Started
 
 You can one-click-deploy this project to balena using the button below:
