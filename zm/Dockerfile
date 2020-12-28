@@ -1,5 +1,5 @@
 
-FROM alwaysai/edgeiq:nano-0.15.1
+FROM balenalib/jetson-nano-ubuntu-python:3-20201211
 
 ENV DEBCONF_NONINTERACTIVE_SEEN true
 ENV DEBIAN_FRONTEND noninteractive
@@ -48,7 +48,7 @@ ARG ZMES_RELEASE=v6.0.6
 ARG INSTALL_YOLOV3=no
 ARG INSTALL_TINYYOLOV3=no
 ARG INSTALL_YOLOV4=no
-ARG INSTALL_TINYYOLOV4=yes
+ARG INSTALL_TINYYOLOV4=no
 ARG INSTALL_CORAL_EDGETPU=no
 
 # install script for the EventServer and the machine learning hooks
@@ -57,7 +57,7 @@ ARG INSTALL_CORAL_EDGETPU=no
 RUN wget https://github.com/pliablepixels/zmeventnotification/archive/${ZMES_RELEASE}.tar.gz && \
     tar xf ${ZMES_RELEASE}.tar.gz --strip-components=1 && \
     ./install.sh --no-interactive --install-es --install-config --install-hook | tee install.log && \
-    if grep -q ERROR install.log ; then exit 1 ; fi && \
+    if grep -iq ERROR install.log ; then exit 1 ; fi && \
     rm -rf ./*
 
 WORKDIR /etc/zm
@@ -88,8 +88,8 @@ ENV ZM_PORTAL="https://portal/zm" \
     ES_ADMIN_INTERFACE_PASSWORD="your_admin_interface_password" \
     ES_CERT_FILE="/path/to/cert/file.pem" \
     ES_KEY_FILE="/path/to/key/file.pem" \
-    ML_USER="your_mlapi_user" \
-    ML_PASSWORD="your_mlapi_password" \
+    ML_USER="zmes" \
+    ML_PASSWORD="zmes" \
     PLATEREC_ALPR_KEY="your_plate_recognizer_api_key" \
     OPENALPR_ALPR_KEY="your_openalpr_api_key" \
     ESCONTROL_INTERFACE_PASSWORD="yourescontrolpassword" \
@@ -103,7 +103,7 @@ ENV TZ UTC
 
 # make sure the www-data user has access to /dev/nv* devices
 # by adding it to the video group
-RUN usermod -aG video www-data
+# RUN usermod -aG video www-data
 
 COPY entrypoint.sh /
 

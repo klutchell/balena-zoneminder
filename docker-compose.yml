@@ -4,6 +4,7 @@ volumes:
   zm_events:
   zm_images:
   zm_tokens:
+  ml_images:
   db:
 
 services:
@@ -24,6 +25,13 @@ services:
     shm_size: 2048M
     depends_on:
       - db
+      - ml
+
+  ml:
+    build: ml
+    privileged: true
+    volumes:
+      - ml_images:/usr/src/app/images
 
   # https://hub.docker.com/_/mariadb/
   db:
