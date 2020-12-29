@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y curl gnupg && \
     echo deb http://ppa.launchpad.net/iconnor/zoneminder-1.34/ubuntu bionic main > /etc/apt/sources.list.d/zoneminder.list && \
     apt-get update && apt-get install --no-install-recommends -y \
         apache2 \
-        wget file \
+        wget file git \
         libapache2-mod-php \
         php-fpm \
         mariadb-client \
@@ -44,7 +44,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y curl gnupg && \
 
 # eventserver release and installer args
 # https://github.com/pliablepixels/zmeventnotification/releases
-ARG ZMES_RELEASE=v6.0.6
+ARG ZMES_RELEASE=534c0b595e3c07d6a5a9ed285884532c4d3b0ee7
 ARG INSTALL_YOLOV3=no
 ARG INSTALL_TINYYOLOV3=no
 ARG INSTALL_YOLOV4=no
@@ -54,8 +54,8 @@ ARG INSTALL_CORAL_EDGETPU=no
 # install script for the EventServer and the machine learning hooks
 # https://github.com/pliablepixels/zmeventnotification/blob/master/install.sh
 # hadolint ignore=DL4006
-RUN wget https://github.com/pliablepixels/zmeventnotification/archive/${ZMES_RELEASE}.tar.gz && \
-    tar xf ${ZMES_RELEASE}.tar.gz --strip-components=1 && \
+RUN git clone https://github.com/pliablepixels/zmeventnotification.git . && \
+    git checkout ${ZMES_RELEASE} && \
     ./install.sh --no-interactive --install-es --install-config --install-hook | tee install.log && \
     if grep -q ERROR install.log ; then exit 1 ; fi && \
     rm -rf ./*
