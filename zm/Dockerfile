@@ -110,3 +110,5 @@ COPY entrypoint.sh /
 RUN chmod a+x /entrypoint.sh
 
 ENTRYPOINT [ "/entrypoint.sh" ]
+
+COPY check_cuda.py check_opencv.py /etc/zm/

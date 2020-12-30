@@ -84,6 +84,19 @@ On restoration if the database doesn't immediately work, we can import the sqldu
 
 <https://mariadb.com/kb/en/mysqldump/#restoring>
 
+## Development
+
+There are a couple python scripts in the root of image that can print
+useful CUDA and OpenCV information.
+
+From a shell session in the `zm` service container:
+
+```bash
+cd /etc/zm
+python3 check_cuda.py
+python3 check_opencv.py
+```
+
 ## Contributing
 
 Please open an issue or submit a pull request with any features, fixes, or changes.
