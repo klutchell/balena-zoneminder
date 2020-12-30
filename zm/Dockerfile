@@ -44,7 +44,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y curl gnupg && \
 
 # eventserver release and installer args
 # https://github.com/pliablepixels/zmeventnotification/releases
-ARG ZMES_RELEASE=534c0b595e3c07d6a5a9ed285884532c4d3b0ee7
+ARG ZMES_RELEASE=029bd2117784b29e545608efeef15728e3802326
 ARG INSTALL_YOLOV3=no
 ARG INSTALL_TINYYOLOV3=no
 ARG INSTALL_YOLOV4=no
