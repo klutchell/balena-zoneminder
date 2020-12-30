@@ -8,6 +8,9 @@ cleanup () {
 
 trap cleanup EXIT
 
+# remove any existing pyzm lock files
+rm -v /tmp/pyzm_*
+
 # create required log directories on tmpfs volumes
 mkdir -v /var/log/apache2 && chown -v root:adm /var/log/apache2
 mkdir -v /var/log/zm && chown -v www-data:root /var/log/zm

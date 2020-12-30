@@ -18,6 +18,7 @@ services:
       - zm_images:/var/cache/zoneminder/images
       - zm_tokens:/var/lib/zmeventnotification/push
     tmpfs:
+      - /tmp
       - /var/log
       - /var/cache/zoneminder/temp
       - /var/cache/zoneminder/cache
