@@ -84,19 +84,34 @@ On restoration if the database doesn't immediately work, we can import the sqldu
 
 <https://mariadb.com/kb/en/mysqldump/#restoring>
 
-## Development
+## Debugging
 
-There are a couple python scripts in the root of image that can print
+There are a couple python scripts in the image that can print
 useful CUDA and OpenCV information.
 
-From a shell session in the `zm` service container:
+```bash
+python3 /etc/zm/check_cuda.py
+python3 /etc/zm/check_opencv.py
+```
+
+`tegrastats` is also available in the image for debugging:
 
 ```bash
-cd /etc/zm
-python3 check_cuda.py
-python3 check_opencv.py
+tegrastats
+
+RAM 1816/3961MB (lfb 5x2MB) SWAP 115/990MB (cached 31MB) CPU [15%@1479,15%@1479,14%@1479,100%@1479] EMC_FREQ 0% GR3D_FREQ 0% PLL@19C CPU@19C PMIC@100C GPU@21C AO@24C thermal@20.25C POM_5V_IN 2515/2515 POM_5V_GPU 0/0 POM_5V_CPU 1054/1054
 ```
 
 ## Contributing
 
 Please open an issue or submit a pull request with any features, fixes, or changes.
+
+## Acknowledgements
+
+ZoneMinder is a free, open source program which is maintained by a very small group of developers, for free, in their spare time.
+
+<https://zoneminder.com/contact/>
+
+Event Notification Server and some of the associated components are authored and maintained by @pliablepixels.
+
+<https://github.com/pliablepixels/zmeventnotification>
