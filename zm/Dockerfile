@@ -44,7 +44,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y curl gnupg && \
 
 # eventserver release and installer args
 # https://github.com/pliablepixels/zmeventnotification/releases
-ARG ZMES_RELEASE=029bd2117784b29e545608efeef15728e3802326
+ARG ZMES_RELEASE=88f43227103e17d9897dada7f6081f90fff738be
 ARG INSTALL_YOLOV3=no
 ARG INSTALL_TINYYOLOV3=no
 ARG INSTALL_YOLOV4=no
@@ -60,6 +60,9 @@ RUN git clone https://github.com/pliablepixels/zmeventnotification.git . && \
     if grep -q ERROR install.log ; then exit 1 ; fi && \
     rm -rf ./*
 
+# switch to zm_detect2.py as suggested by @pliablepixels
+RUN sed 's|zm_detect.py|zm_detect2.py|' -i /var/lib/zmeventnotification/bin/zm_event_start.sh
+
 WORKDIR /etc/zm
 
 # Secrets configuration
@@ -73,12 +76,6 @@ COPY zmeventnotification.ini /etc/zm/zmeventnotification.ini
 # Machine Learning Hooks configuration
 # https://github.com/pliablepixels/zmeventnotification/blob/master/hook/objectconfig.ini
 COPY objectconfig.ini /etc/zm/objectconfig.ini
-
-# default database env vars
-ENV ZM_DB_HOST=db \
-    ZM_DB_NAME=zm \
-    ZM_DB_USER=zmuser \
-    ZM_DB_PASS=zmpass
 
 # default secrets values
 # https://github.com/pliablepixels/zmeventnotification/blob/master/secrets.ini
