@@ -13,6 +13,11 @@ services:
     ports:
       - 80:80/tcp
       - 9000:9000/tcp
+    environment: 
+      ZM_DB_HOST: db
+      ZM_DB_NAME: zm
+      ZM_DB_USER: zmuser
+      ZM_DB_PASS: zmpass
     volumes:
       - zm_events:/var/cache/zoneminder/events
       - zm_images:/var/cache/zoneminder/images
@@ -29,14 +34,7 @@ services:
   # https://hub.docker.com/_/mariadb/
   db:
     build: db
+    environment: 
+      MYSQL_DATABASE: zm
     volumes:
       - db:/var/lib/mysql
-  
-  # https://hub.docker.com/_/mariadb/
-  sqldump:
-    build: db
-    command: "/sqldump.sh"
-    volumes:
-      - db:/var/lib/mysql
-    depends_on:
-      - db

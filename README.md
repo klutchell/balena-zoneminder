@@ -73,17 +73,6 @@ by going to `Options->Systems` and enable `OPT_USE_EVENTNOTIFICATION` and you ar
 
 <https://zmeventnotification.readthedocs.io/en/stable/guides/install.html#making-sure-the-es-gets-auto-started-when-zm-starts>
 
-### sqldump
-
-The `sqldump` service will run every hour and take a snapshot of the mysql database.
-This snapshot is more likely to be recovered from a backup than an in-use database file.
-
-We don't want to rely on a backup of a database that is currently in use,
-so sqldump creates a snapshot that is not impacted by open database files.
-On restoration if the database doesn't immediately work, we can import the sqldump file.
-
-<https://mariadb.com/kb/en/mysqldump/#restoring>
-
 ## Debugging
 
 There are a couple python scripts in the image that can print
