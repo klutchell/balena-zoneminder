@@ -31,6 +31,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y curl gnupg && \
         va-driver-all \
         vdpau-driver-all \
         libvlc-bin \
+        libjpeg-dev \
         gettext-base && \
     apt-get clean && rm -rf /var/lib/apt/lists/* && \
     a2enconf zoneminder && a2enmod rewrite cgi && \
@@ -44,7 +45,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y curl gnupg && \
 
 # eventserver release and installer args
 # https://github.com/pliablepixels/zmeventnotification/releases
-ARG ZMES_RELEASE=88f43227103e17d9897dada7f6081f90fff738be
+ARG ZMES_RELEASE=v6.1.5
 ARG INSTALL_YOLOV3=no
 ARG INSTALL_TINYYOLOV3=no
 ARG INSTALL_YOLOV4=no
@@ -59,9 +60,6 @@ RUN git clone https://github.com/pliablepixels/zmeventnotification.git . && \
     ./install.sh --no-interactive --install-es --install-config --install-hook | tee install.log && \
     if grep -q ERROR install.log ; then exit 1 ; fi && \
     rm -rf ./*
-
-# switch to zm_detect2.py as suggested by @pliablepixels
-RUN sed 's|zm_detect.py|zm_detect2.py|' -i /var/lib/zmeventnotification/bin/zm_event_start.sh
 
 WORKDIR /etc/zm
 
