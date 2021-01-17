@@ -1,5 +1,5 @@
 
-FROM alwaysai/edgeiq:nano-0.15.1
+FROM alwaysai/edgeiq:jetson-0.17.1
 
 ENV DEBCONF_NONINTERACTIVE_SEEN true
 ENV DEBIAN_FRONTEND noninteractive
@@ -32,7 +32,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y curl gnupg && \
         vdpau-driver-all \
         libvlc-bin \
         libjpeg-dev \
-        gettext-base && \
+        gettext-base \
+        sudo && \
     apt-get clean && rm -rf /var/lib/apt/lists/* && \
     a2enconf zoneminder && a2enmod rewrite cgi && \
     perl -MCPAN -e "install Net::WebSocket::Server" && \
@@ -45,7 +46,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y curl gnupg && \
 
 # eventserver release and installer args
 # https://github.com/pliablepixels/zmeventnotification/releases
-ARG ZMES_RELEASE=v6.1.5
+ARG ZMES_RELEASE=v6.1.7
 ARG INSTALL_YOLOV3=no
 ARG INSTALL_TINYYOLOV3=no
 ARG INSTALL_YOLOV4=no

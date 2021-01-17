@@ -4,6 +4,7 @@ volumes:
   zm_events:
   zm_images:
   zm_tokens:
+  zm_logs:
   db:
 
 services:
@@ -22,9 +23,10 @@ services:
       - zm_events:/var/cache/zoneminder/events
       - zm_images:/var/cache/zoneminder/images
       - zm_tokens:/var/lib/zmeventnotification/push
+      - zm_logs:/var/log
     tmpfs:
       - /tmp
-      - /var/log
+      # - /var/log
       - /var/cache/zoneminder/temp
       - /var/cache/zoneminder/cache
     shm_size: 2048M
