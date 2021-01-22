@@ -11,7 +11,7 @@ trap cleanup EXIT
 # remove any existing pyzm lock files
 rm -v /tmp/pyzm_* || true
 
-# create required log directories on tmpfs volumes
+# create required log directories
 mkdir -v /var/log/apache2 && chown -v root:adm /var/log/apache2
 mkdir -v /var/log/zm && chown -v www-data:root /var/log/zm
 
@@ -24,6 +24,9 @@ then
     umount -v /dev/shm
     mount -v -t tmpfs -o rw,nosuid,nodev,noexec,relatime,size="${SHMEM}" tmpfs /dev/shm
 fi
+
+python3 check_cuda.py
+python3 check_opencv.py
 
 # set the timezone from the TZ env var
 echo "date.timezone = ${TZ}" >> /etc/php/7.2/apache2/php.ini
