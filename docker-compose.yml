@@ -26,7 +26,6 @@ services:
       - zm_logs:/var/log
     tmpfs:
       - /tmp
-      # - /var/log
       - /var/cache/zoneminder/temp
       - /var/cache/zoneminder/cache
     shm_size: 2048M
