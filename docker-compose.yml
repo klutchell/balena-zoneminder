@@ -4,38 +4,38 @@ volumes:
   zm_events:
   zm_images:
   zm_tokens:
-  zm_logs:
+  # zm_logs:
   db:
 
 services:
   zm:
     build: zm
-    privileged: true
     ports:
       - 80:80/tcp
       - 9000:9000/tcp
-    environment: 
-      ZM_DB_HOST: db
-      ZM_DB_NAME: zm
-      ZM_DB_USER: zmuser
-      ZM_DB_PASS: zmpass
     volumes:
       - zm_events:/var/cache/zoneminder/events
       - zm_images:/var/cache/zoneminder/images
       - zm_tokens:/var/lib/zmeventnotification/push
-      - zm_logs:/var/log
+      # - zm_logs:/var/log
     tmpfs:
       - /tmp
+      - /var/log
       - /var/cache/zoneminder/temp
       - /var/cache/zoneminder/cache
     shm_size: 2048M
     depends_on:
       - db
 
-  # https://hub.docker.com/_/mariadb/
   db:
     build: db
     environment: 
       MYSQL_DATABASE: zm
     volumes:
       - db:/var/lib/mysql
+
+  ml:
+    build: ml
+    privileged: true
+    ports:
+      - 5000:5000/tcp

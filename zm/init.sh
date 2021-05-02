@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 cleanup () {
     /usr/sbin/apache2 -k stop
     sleep 5
@@ -12,11 +14,12 @@ trap cleanup EXIT
 rm -v /tmp/pyzm_* || true
 
 # create required log directories on tmpfs volumes
-mkdir -v /var/log/apache2 && chown -v root:adm /var/log/apache2
-mkdir -v /var/log/zm && chown -v www-data:root /var/log/zm
+mkdir -pv /var/log/apache2 && chown -v root:adm /var/log/apache2
+mkdir -pv /var/log/zm && chown -v www-data:root /var/log/zm
 
 # take ownership of zoneminder volumes
 chown -v www-data:www-data /var/cache/zoneminder/*
+chown -v www-data:www-data /var/lib/zmeventnotification/*
 
 if [ -n "${SHMEM}" ]
 then
@@ -38,7 +41,12 @@ ZM_DB_PASS=${ZM_DB_PASS}
 ZM_DB_NAME=${ZM_DB_NAME}
 EOF
 
-envsubst < /etc/zm/secrets.ini.in > /etc/zm/secrets.ini
+secrets_file=/etc/zm/secrets.ini
+# for each var in secrets.ini update it with the env var if available
+while IFS='=' read -r var _
+do
+    [ -n "${!var}" ] && crudini --set "${secrets_file}" secrets "${var}" "${!var}"
+done < <(crudini --get --format sh "${secrets_file}" secrets | awk '{print toupper($0)}')
 
 while ! mysqladmin ping -h"${ZM_DB_HOST}" 2>/dev/null
 do
@@ -54,11 +62,10 @@ GRANT ALL PRIVILEGES ON ${ZM_DB_NAME}.* TO '${ZM_DB_USER}'@'%' ;
 FLUSH PRIVILEGES ;
 EOSQL
 
-/usr/bin/mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -h"${ZM_DB_HOST}" -e "source /usr/share/zoneminder/db/zm_user.sql" || true
-
 if ! /usr/bin/mysqlshow -u"${ZM_DB_USER}" -p"${ZM_DB_PASS}" -h"${ZM_DB_HOST}" "${ZM_DB_NAME}" 1>/dev/null
 then
-    /usr/bin/mysql -u"${ZM_DB_USER}" -p"${ZM_DB_PASS}" -h"${ZM_DB_HOST}" < /usr/share/zoneminder/db/zm_create.sql
+    /usr/bin/mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -h"${ZM_DB_HOST}" < /usr/share/zoneminder/db/zm_create.sql
+    /usr/bin/mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -h"${ZM_DB_HOST}" < /usr/share/zoneminder/db/zm_user.sql
 fi
 
 /usr/bin/zmupdate.pl -nointeractive
@@ -70,4 +77,4 @@ source /etc/apache2/envvars
 
 /usr/bin/zmpkg.pl start
 
-tail -f /dev/null
+sleep infinity

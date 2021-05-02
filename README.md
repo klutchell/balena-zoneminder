@@ -4,7 +4,7 @@
 
 ## Requirements
 
-- Jetson Nano with 16GB+ microSD card
+- Jetson Nano with 32GB+ microSD card
 
 ## Getting Started
 
