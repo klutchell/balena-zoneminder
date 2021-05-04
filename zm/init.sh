@@ -48,6 +48,8 @@ do
     [ -n "${!var}" ] && crudini --set "${secrets_file}" secrets "${var}" "${!var}"
 done < <(crudini --get --format sh "${secrets_file}" secrets | awk '{print toupper($0)}')
 
+[ -n "${MQTT_ENABLE}" ] && crudini --set /etc/zm/zmeventnotification.ini mqtt enable "${MQTT_ENABLE}"
+
 while ! mysqladmin ping -h"${ZM_DB_HOST}" 2>/dev/null
 do
     echo "Waiting for connection to mysql server ${ZM_DB_HOST} ..."
